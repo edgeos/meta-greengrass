@@ -1,0 +1,13 @@
+[Unit]
+Description=greengrass log directory bind mount
+Requires=mnt-conf.mount edgeos-data-mnt-init.service
+After=mnt-conf.mount edgeos-data-mnt-init.service
+
+[Mount]
+What=/mnt/data/root-overlay/greengrass/ggc/packages/1.3.0/ggc_root
+Where=/greengrass/ggc/var/log
+Type=none
+Options=bind
+
+[Install]
+WantedBy=edgeos-bind.target
