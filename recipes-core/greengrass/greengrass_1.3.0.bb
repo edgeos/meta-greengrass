@@ -41,8 +41,9 @@ do_install() {
 	# Install systemd init scripts for greengrass
 	install -d ${D}${systemd_unitdir}/system
 	install -c -m 0644 ${WORKDIR}/${PN}d.service ${D}${systemd_unitdir}/system
-	# Create greengrass r/w directory in /mnt/dataand bind mount
+	# Create greengrass r/w directories for data and logs in /mnt/data and bind mount
 	install -d ${D}/${BPN}/ggc/packages/${PV}/ggc_root
+	install -d ${D}/${BPN}/ggc/var/log
 }
 
 # Perform post installation tasks that are required for AWS Greengrass to
