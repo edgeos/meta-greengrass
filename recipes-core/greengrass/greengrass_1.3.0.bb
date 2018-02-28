@@ -18,7 +18,17 @@ SRC_URI = "file://${PN}-${BUILD_OS}-${TARGET_ARCH}-${PV}.tar.gz"
 #inherit autotools
 inherit bin_package
 
+S = "${WORKDIR}/${BPN}"
+
+
+do_install() {
+	install -d ${D}/${BPN}
+	tar --no-same-owner --exclude='./patches' --exclude='./.pc' -cpf - -C ${S} . \
+| tar --no-same-owner -xpf - -C ${D}/${BPN}
+
+}
+
 
 # DEPENDENCIES
-RDEPENDS_${PN} = "sqlite3 openssh bash ca-certificates openssl python-modules"
+RDEPENDS_${PN} = "sqlite3 openssl bash ca-certificates openssl python-modules"
 
