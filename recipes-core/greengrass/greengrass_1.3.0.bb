@@ -36,6 +36,33 @@ do_install() {
 
 }
 
+# Perform post installation tasks that are required for AWS Greengrass to
+# run. These include:
+# 1. Enabling protection for hardlinks and symlinks
+# 2. Adding cgroup support in `/etc/fstab`
+pkg_postinst_${PN}() {
+
+	# Enable protection for hardlinks and symlinks
+	if ! grep -qs 'protected_.*links' $D${sysconfdir}/sysctl.conf; then
+		cat >> $D${sysconfdir}/sysctl.conf <<- EOF
+			# AWS Greengrass: protect hardlinks/symlinks
+			fs.protected_hardlinks = 1
+			fs.protected_symlinks = 1
+		EOF
+	fi
+
+	if [ -f "$D${sysconfdir}/fstab" ]; then
+
+		if ! grep -qs '^cgroup' $D${sysconfdir}/fstab; then
+			cat >> $D${sysconfdir}/fstab <<- EOF
+				# Greengrass: mount cgroups
+				cgroup    /sys/fs/cgroup    cgroup    defaults    0  0
+			EOF
+		fi
+	fi
+
+}
+
 
 USERADD_PACKAGES = "${PN}"
 
