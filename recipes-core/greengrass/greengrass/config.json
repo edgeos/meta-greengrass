@@ -1,0 +1,17 @@
+{
+    "coreThing" : {
+      "caPath" : "root-ca-cert.pem",
+      "certPath" : "edf42b1529.cert.pem",
+      "keyPath" : "edf42b1529.private.key",
+      "thingArn" : "arn:aws:iot:us-west-2:389158924366:thing/MacOS_Core",
+      "iotHost" : "a19t3wk7sr2jyy.iot.us-west-2.amazonaws.com",
+      "ggHost" : "greengrass.iot.us-west-2.amazonaws.com",
+      "keepAlive" : 600
+    },
+    "runtime" : {
+      "cgroup" : {
+        "useSystemd" : "yes"
+      }
+    },
+    "managedRespawn" : false
+  }
