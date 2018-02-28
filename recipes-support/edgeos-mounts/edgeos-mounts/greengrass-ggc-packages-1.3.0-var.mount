@@ -4,8 +4,8 @@ Requires=mnt-data.mount edgeos-data-mnt-init.service
 After=mnt-data.mount edgeos-data-mnt-init.service
 
 [Mount]
-What=/mnt/data/root-overlay/greengrass/ggc/packages/1.3.0/var/tmp
-Where=/greengrass/ggc/packages/1.3.0/var/tmp
+What=/mnt/data/root-overlay/greengrass/ggc/packages/1.3.0/var
+Where=/greengrass/ggc/packages/1.3.0/var
 Type=none
 Options=bind
 
