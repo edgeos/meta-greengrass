@@ -17,7 +17,7 @@ do_install_append () {
         install -c -m 0644 \
             ${WORKDIR}/greengrass-ggc-packages-1.3.0-ggc_root.mount \
             ${WORKDIR}/greengrass-ggc-var-log.mount \
-            ${WORKDIR}/greengrass-ggc-packages-1.3.0-var-tmp.mount
+            ${WORKDIR}/greengrass-ggc-packages-1.3.0-var-tmp.mount \
             ${D}${systemd_unitdir}/system
             
         #Update mount scripts to use actual parition names
