@@ -42,6 +42,7 @@ do_install() {
 	install -d ${D}/${BPN}
 	tar --no-same-owner --exclude='./patches' --exclude='./.pc' -cpf - -C ${S} . \
 | tar --no-same-owner -xpf - -C ${D}/${BPN}
+	chmod 755 ${D}/${BPN}/ggc/core/greengrassd
 
 	# Install systemd init scripts for greengrass
 	install -d ${D}${systemd_unitdir}/system
