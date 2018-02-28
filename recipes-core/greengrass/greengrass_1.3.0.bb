@@ -16,6 +16,11 @@ INHIBIT_PACKAGE_STRIP = "1"
 SRC_URI = " \
 	file://${PN}-${BUILD_OS}-${TARGET_ARCH}-${PV}.tar.gz \
 	file://greengrassd.service \
+	file://config.json \
+	file://edf42b1529.public.key \
+	file://edf42b1529.cert.pem \
+	file://edf42b1529.private.key \
+	root-ca-cert.pem \
 	"
 
 SYSTEMD_SERVICE_${PN} = " \
