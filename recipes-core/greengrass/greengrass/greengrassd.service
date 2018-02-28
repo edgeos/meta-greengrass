@@ -1,0 +1,11 @@
+[Unit]
+Description=Greengrass initialization
+After=network.target greengrass-ggc-packages-1.3.0-ggc_root.mount
+Requires=greengrass-ggc-packages-1.3.0-ggc_root.mount
+
+[Service]
+ExecStart=/greengrass/ggc/core/greengrassd start
+ExecStop=/greengrass/ggc/core/greengrassd stop
+
+[Install]
+WantedBy=multi-user.target
