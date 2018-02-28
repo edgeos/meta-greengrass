@@ -10,6 +10,12 @@ SYSTEMD_SERVICE_${PN}_append = " \
 
 do_install_append () {
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
+
+        install -d ${D}${systemd_unitdir}/system
+        install -c -m 0644 \
+            ${WORKDIR}/greengrass-ggc-packages-1.3.0-ggc_root.mount \
+            ${D}${systemd_unitdir}/system
+            
         #Update mount scripts to use actual parition names
         sed -i -e 's,@EDGEOS_BOOT_FS_LABEL@,${EDGEOS_BOOT_FS_LABEL},g' \
                -e 's,@EDGEOS_ROOT_FS_LABEL@,${EDGEOS_ROOT_FS_LABEL},g' \
