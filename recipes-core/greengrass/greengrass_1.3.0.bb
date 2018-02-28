@@ -20,7 +20,7 @@ SRC_URI = " \
 	file://edf42b1529.public.key \
 	file://edf42b1529.cert.pem \
 	file://edf42b1529.private.key \
-	root-ca-cert.pem \
+	file://root-ca-cert.pem \
 	"
 
 SYSTEMD_SERVICE_${PN} = " \
