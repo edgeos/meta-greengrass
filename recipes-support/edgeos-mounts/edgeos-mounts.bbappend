@@ -20,6 +20,7 @@ do_install_append () {
             ${WORKDIR}/greengrass-ggc-var-log.mount \
             ${WORKDIR}/greengrass-ggc-packages-1.3.0-var.mount \
             ${WORKDIR}/greengrass-ggc-deployment-lambda.mount \
+            ${WORKDIR}/greengrass-certs.mount \
             ${D}${systemd_unitdir}/system
             
         #Update mount scripts to use actual parition names
