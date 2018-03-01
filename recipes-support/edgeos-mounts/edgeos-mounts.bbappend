@@ -6,6 +6,7 @@ SRC_URI_append = " \
     file://greengrass-ggc-var-log.mount \
     file://greengrass-ggc-packages-1.3.0-var.mount \
     file://greengrass-ggc-deployment-lambda.mount \
+    file://greengrass-certs.mount \
     "
 
 SYSTEMD_SERVICE_${PN}_append = " \
