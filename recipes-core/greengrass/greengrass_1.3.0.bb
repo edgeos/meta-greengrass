@@ -63,7 +63,7 @@ do_install() {
 	install -d ${D}/${GG_CERT_DIR}
 	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.cert.pem ${D}/${GG_CERT_DIR}
 	install -c -m 0400 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.private.key ${D}/${GG_CERT_DIR}
-	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greeengrass.public.key ${D}/${GG_CERT_DIR}
+	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.public.key ${D}/${GG_CERT_DIR}
 	install -c -m 0400 -o ggc_user -g ggc_group ${WORKDIR}/greengrass-root-ca-cert.pem ${D}/${GG_CERT_DIR}
 	
 }
