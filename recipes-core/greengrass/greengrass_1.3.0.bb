@@ -52,6 +52,7 @@ do_install() {
 	install -d ${D}/${BPN}/ggc/packages/${PV}/ggc_root
 	install -d ${D}/${BPN}/ggc/packages/${PV}/var
 	install -d ${D}/${BPN}/ggc/var/log
+	install -d ${D}/${BPN}/ggc/deployment/lambda.mount
 
 	# Copy in configuration file
 	install -c -m 0644 ${WORKDIR}/config.json ${D}/${BPN}/config
