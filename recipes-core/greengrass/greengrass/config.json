@@ -1,8 +1,8 @@
 {
     "coreThing" : {
-      "caPath" : "root-ca-cert.pem",
-      "certPath" : "edf42b1529.cert.pem",
-      "keyPath" : "edf42b1529.private.key",
+      "caPath" : "/usr/local/share/ca-certificates/greengrass-root-ca-cert.pem",
+      "certPath" : "/usr/local/share/ca-certificates/greengrass.cert.pem",
+      "keyPath" : "/usr/local/share/ca-certificates/greengrass.private.key",
       "thingArn" : "arn:aws:iot:us-west-2:389158924366:thing/MacOS_Core",
       "iotHost" : "a19t3wk7sr2jyy.iot.us-west-2.amazonaws.com",
       "ggHost" : "greengrass.iot.us-west-2.amazonaws.com",
