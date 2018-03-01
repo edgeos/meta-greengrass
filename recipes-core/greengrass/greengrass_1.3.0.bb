@@ -20,7 +20,7 @@ SRC_URI = " \
 	file://greengrass.public.key \
 	file://greengrass.cert.pem \
 	file://greengrass.private.key \
-	file://root-ca-cert.pem \
+	file://greengrass-root-ca-cert.pem \
 	"
 
 SYSTEMD_SERVICE_${PN} = " \
