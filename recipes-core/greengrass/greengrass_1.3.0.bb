@@ -17,6 +17,10 @@ SRC_URI = " \
 	file://${PN}-${BUILD_OS}-${TARGET_ARCH}-${PV}.tar.gz \
 	file://greengrassd.service \
 	file://config.json \
+	file://greengrass.public.key \
+	file://greengrass.cert.pem \
+	file://greengrass.private.key \
+	file://root-ca-cert.pem \
 	"
 
 SYSTEMD_SERVICE_${PN} = " \
@@ -55,11 +59,11 @@ do_install() {
 	install -c -m 0644 ${WORKDIR}/config.json ${D}/${BPN}/config
 
 	# TEMPORARY: Copy in certs
-	# GG_CERT_DIR := "/etc/greengrass/certs"
-	# install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/gg.cert.pem ${D}/${GG_CERT_DIR}
-	# install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/gg.private.key ${D}/${GG_CERT_DIR}
-	# install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/gg.public.key ${D}/${GG_CERT_DIR}
-	# install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/root-ca-cert.pem ${D}/${GG_CERT_DIR}
+	GG_CERT_DIR := "/usr/local/share/ca-certificates/"
+	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.cert.pem ${D}/${GG_CERT_DIR}
+	install -c -m 0400 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.private.key ${D}/${GG_CERT_DIR}
+	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greeengrass.public.key ${D}/${GG_CERT_DIR}
+	install -c -m 0400 -o ggc_user -g ggc_group ${WORKDIR}/greengrass-root-ca-cert.pem ${D}/${GG_CERT_DIR}
 	
 }
 
