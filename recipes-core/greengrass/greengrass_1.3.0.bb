@@ -58,10 +58,10 @@ do_install() {
 	install -c -m 0644 ${WORKDIR}/config.json ${D}/${BPN}/config
 
 	# TEMPORARY: Copy in certs
-	install -c -m 0644 ${WORKDIR}/edf42b1529.cert.pem ${D}/${BPN}/certs
-	install -c -m 0644 ${WORKDIR}/edf42b1529.private.key ${D}/${BPN}/certs
-	install -c -m 0644 ${WORKDIR}/edf42b1529.public.key ${D}/${BPN}/certs
-	install -c -m 0644 ${WORKDIR}/root-ca-cert.pem ${D}/${BPN}/certs
+	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/edf42b1529.cert.pem ${D}/${BPN}/certs
+	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/edf42b1529.private.key ${D}/${BPN}/certs
+	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/edf42b1529.public.key ${D}/${BPN}/certs
+	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/root-ca-cert.pem ${D}/${BPN}/certs
 	
 }
 
