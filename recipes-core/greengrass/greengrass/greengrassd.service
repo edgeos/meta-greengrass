@@ -1,7 +1,8 @@
 [Unit]
 Description=Greengrass initialization
-After=network.target greengrass-ggc-packages-1.3.0-ggc_root.mount greengrass-ggc-packages-1.3.0-var.mount greengrass-ggc-var-log.mount greengrass-ggc-deployment-lambda.mount
-Requires=greengrass-ggc-packages-1.3.0-ggc_root.mount greengrass-ggc-packages-1.3.0-var.mount greengrass-ggc-var-log.mount greengrass-ggc-deployment-lambda.mount
+After=network.target greengrass-ggc-packages-1.3.0-ggc_root.mount greengrass-ggc-packages-1.3.0-var.mount greengrass-ggc-var-log.mount greengrass-ggc-deployment-lambda.mount greengrass-certs.mount
+Requires=greengrass-ggc-packages-1.3.0-ggc_root.mount greengrass-ggc-packages-1.3.0-var.mount greengrass-ggc-var-log.mount greengrass-ggc-deployment-lambda.mount greengrass-certs.mount
+
 
 [Service]
 ExecStart=/greengrass/ggc/core/greengrassd start
