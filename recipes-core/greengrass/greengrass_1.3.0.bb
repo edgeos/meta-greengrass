@@ -38,7 +38,7 @@ do_compile[noexec] = "1"
 # of copying the unpacked files into the /greengrass folder
 # ${D} = /
 # ${BPN} = greengrass
-GG_CERT_DIR := "usr/local/share/ca-certificates/"
+GG_CERT_DIR := "greengrass/certs/"
 do_install() {
 	install -d ${D}/${BPN}
 	tar --no-same-owner --exclude='./patches' --exclude='./.pc' -cpf - -C ${S} . \

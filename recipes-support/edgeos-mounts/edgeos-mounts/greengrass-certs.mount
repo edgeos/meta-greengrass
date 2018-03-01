@@ -1,0 +1,13 @@
+[Unit]
+Description=greengrass certs directory bind mount
+Requires=mnt-data.mount edgeos-data-mnt-init.service
+After=mnt-data.mount edgeos-data-mnt-init.service
+
+[Mount]
+What=/mnt/data/root-overlay/greengrass/certs
+Where=/greengrass/certs
+Type=none
+Options=bind
+
+[Install]
+WantedBy=edgeos-bind.target
