@@ -28,11 +28,12 @@ do_install_append () {
             ${WORKDIR}/greengrass-certs.mount \
             ${D}${systemd_unitdir}/system
             
-            # TEMPORARY: Copy in certs
-        install -c -m 0644 ${WORKDIR}/greengrass.cert.pem ${D}/${BPN}/certs
-        install -c -m 0400 ${WORKDIR}/greengrass.private.key ${D}/${BPN}/certs
-        install -c -m 0644 ${WORKDIR}/greengrass.public.key ${D}/${BPN}/certs
-        install -c -m 0400 ${WORKDIR}/greengrass-root-ca-cert.pem ${D}/${BPN}/certs
+        # TEMPORARY: Copy in certs
+        install -d ${D}${systemd_unitdir}/image/mnt/data/certs
+        install -c -m 0644 ${WORKDIR}/greengrass.cert.pem ${D}/mnt/data/greengrass/certs
+        install -c -m 0400 ${WORKDIR}/greengrass.private.key ${D}/mnt/data/greengrass/certs
+        install -c -m 0644 ${WORKDIR}/greengrass.public.key ${D}/mnt/data/greengrass/certs
+        install -c -m 0400 ${WORKDIR}/greengrass-root-ca-cert.pem ${D}/mnt/data/greengrass/certs
         
         #Update mount scripts to use actual parition names
         sed -i -e 's,@EDGEOS_BOOT_FS_LABEL@,${EDGEOS_BOOT_FS_LABEL},g' \
