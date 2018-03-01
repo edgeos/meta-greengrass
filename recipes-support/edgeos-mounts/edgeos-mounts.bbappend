@@ -7,6 +7,10 @@ SRC_URI_append = " \
     file://greengrass-ggc-packages-1.3.0-var.mount \
     file://greengrass-ggc-deployment-lambda.mount \
     file://greengrass-certs.mount \
+    file://greengrass.public.key \
+    file://greengrass.cert.pem \
+    file://greengrass.private.key \
+    file://greengrass-root-ca-cert.pem \
     "
 
 SYSTEMD_SERVICE_${PN}_append = " \
@@ -24,6 +28,12 @@ do_install_append () {
             ${WORKDIR}/greengrass-certs.mount \
             ${D}${systemd_unitdir}/system
             
+            # TEMPORARY: Copy in certs
+        install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.cert.pem ${D}/${BPN}/certs
+        install -c -m 0400 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.private.key ${D}/${BPN}/certs
+        install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.public.key ${D}/${BPN}/certs
+        install -c -m 0400 -o ggc_user -g ggc_group ${WORKDIR}/greengrass-root-ca-cert.pem ${D}/${BPN}/certs
+        
         #Update mount scripts to use actual parition names
         sed -i -e 's,@EDGEOS_BOOT_FS_LABEL@,${EDGEOS_BOOT_FS_LABEL},g' \
                -e 's,@EDGEOS_ROOT_FS_LABEL@,${EDGEOS_ROOT_FS_LABEL},g' \

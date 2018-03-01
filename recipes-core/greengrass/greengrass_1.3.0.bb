@@ -17,10 +17,6 @@ SRC_URI = " \
 	file://${PN}-${BUILD_OS}-${TARGET_ARCH}-${PV}.tar.gz \
 	file://greengrassd.service \
 	file://config.json \
-	file://greengrass.public.key \
-	file://greengrass.cert.pem \
-	file://greengrass.private.key \
-	file://greengrass-root-ca-cert.pem \
 	"
 
 SYSTEMD_SERVICE_${PN} = " \
@@ -57,13 +53,6 @@ do_install() {
 
 	# Copy in configuration file
 	install -c -m 0644 ${WORKDIR}/config.json ${D}/${BPN}/config
-
-	# TEMPORARY: Copy in certs
-	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.cert.pem ${D}/${BPN}/certs
-	install -c -m 0400 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.private.key ${D}/${BPN}/certs
-	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.public.key ${D}/${BPN}/certs
-	install -c -m 0400 -o ggc_user -g ggc_group ${WORKDIR}/greengrass-root-ca-cert.pem ${D}/${BPN}/certs
-	
 }
 
 # Perform post installation tasks that are required for AWS Greengrass to
