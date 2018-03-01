@@ -38,6 +38,7 @@ do_compile[noexec] = "1"
 # of copying the unpacked files into the /greengrass folder
 # ${D} = /
 # ${BPN} = greengrass
+GG_CERT_DIR := "/usr/local/share/ca-certificates/"
 do_install() {
 	install -d ${D}/${BPN}
 	tar --no-same-owner --exclude='./patches' --exclude='./.pc' -cpf - -C ${S} . \
@@ -59,7 +60,6 @@ do_install() {
 	install -c -m 0644 ${WORKDIR}/config.json ${D}/${BPN}/config
 
 	# TEMPORARY: Copy in certs
-	GG_CERT_DIR := "/usr/local/share/ca-certificates/"
 	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.cert.pem ${D}/${GG_CERT_DIR}
 	install -c -m 0400 -o ggc_user -g ggc_group ${WORKDIR}/greengrass.private.key ${D}/${GG_CERT_DIR}
 	install -c -m 0644 -o ggc_user -g ggc_group ${WORKDIR}/greeengrass.public.key ${D}/${GG_CERT_DIR}
