@@ -8,7 +8,7 @@ Conflicts=umount.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/bin/cp -R /%I /mnt/data/%I
+ExecStart=@BASE_BINDIR@/cp -R /%I /mnt/data/%I
 
 [Install]
 WantedBy=multi-user.target
