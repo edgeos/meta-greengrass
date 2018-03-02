@@ -13,7 +13,10 @@ SRC_URI_append = " \
     "
 
 SYSTEMD_SERVICE_${PN}_append = " \
-    greengrass \
+    greengrass-certs.mount \
+    greengrass-ggc-deployment.mount \
+    greengrass-ggc-packages.mount \
+    greengrass-ggc-var.mount \
     "
 
 do_install_append () {
