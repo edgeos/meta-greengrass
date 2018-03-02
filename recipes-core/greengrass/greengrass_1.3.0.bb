@@ -34,6 +34,8 @@ do_configure(){
 	# Greengrass requires overlayfs. Check that the override is enabled using inline Python.
 	if [ ! ${@"true" if 'overlayfs' in d.getVar('OVERRIDES', True).split(":") else "false"} ]; then
 		bbfatal "Overlayfs must be enabled. Enable with make build BBOVERRIDES=\":overlayfs\""
+	else
+		bbfatal "Conditions are reversed"
 	fi 
 }
 
