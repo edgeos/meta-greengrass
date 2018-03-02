@@ -1,7 +1,7 @@
 [Unit]
-Description=greengrass tmp directory bind mount
+Description=greengrass packages directory bind mount
 Requires=mnt-data.mount edgeos-data-mnt-init.service copy-files-at-bind-mount-target@%p.service
-After=mnt-data.mount edgeos-data-mnt-init.service 
+After=mnt-data.mount edgeos-data-mnt-init.service
 After=copy-files-at-bind-mount-target@%p.service
 
 [Mount]
