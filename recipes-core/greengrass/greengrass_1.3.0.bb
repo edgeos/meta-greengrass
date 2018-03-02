@@ -31,9 +31,10 @@ S = "${WORKDIR}/${BPN}"
 do_compile[noexec] = "1"
 
 do_configure(){
-	# Greengrass requires overlayfs. Check that the override is enabled
+	# Greengrass requires overlayfs. Check that the override is enabled using inline Python.
 	if [ ! ${@"true" if 'overlayfs' in d.getVar('OVERRIDES', True).split(":") else "false"} ]; then
 		bbfatal "Overlayfs must be enabled. Enable with make build BBOVERRIDES=\":overlayfs\""
+	fi 
 }
 
 # Perform the installation of the AWS Greengrass binaries, which consists
