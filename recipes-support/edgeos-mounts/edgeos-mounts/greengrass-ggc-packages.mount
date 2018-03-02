@@ -1,7 +1,7 @@
 [Unit]
 Description=greengrass tmp directory bind mount
-Requires=mnt-data.mount edgeos-data-mnt-init.service
-After=mnt-data.mount edgeos-data-mnt-init.service
+Requires=mnt-data.mount edgeos-data-mnt-init.service edgeos-conf-reset.service
+After=mnt-data.mount edgeos-data-mnt-init.service edgeos-conf-reset.service
 
 [Mount]
 What=/mnt/data/root-overlay/greengrass/ggc/packages
