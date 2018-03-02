@@ -10,7 +10,7 @@ SRC_URI_append = " \
     file://greengrass.cert.pem \
     file://greengrass.private.key \
     file://greengrass-root-ca-cert.pem \
-    file://copy-files-at-bind-mount-target@.service
+    file://copy-files-at-bind-mount-target@.service \
     "
 
 SYSTEMD_SERVICE_${PN}_append = " \
