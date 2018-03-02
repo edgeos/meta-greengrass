@@ -45,10 +45,9 @@ do_install() {
 	install -c -m 0644 ${WORKDIR}/${PN}d.service ${D}${systemd_unitdir}/system
 
 	# Create greengrass r/w directories for data and logs in /mnt/data and bind mount
-	install -d ${D}/${BPN}/ggc/packages/${PV}/ggc_root
-	install -d ${D}/${BPN}/ggc/packages/${PV}/var
-	install -d ${D}/${BPN}/ggc/var/log
-	install -d ${D}/${BPN}/ggc/deployment/lambda
+	install -d ${D}/${BPN}/ggc/packages
+	install -d ${D}/${BPN}/ggc/var
+	install -d ${D}/${BPN}/ggc/deployment
 	install -d ${D}/${BPN}/certs
 
 	# Copy in configuration file

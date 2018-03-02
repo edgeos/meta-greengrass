@@ -1,11 +1,11 @@
 [Unit]
-Description=greengrass tmp directory bind mount
+Description=greengrass log directory bind mount
 Requires=mnt-data.mount edgeos-data-mnt-init.service
 After=mnt-data.mount edgeos-data-mnt-init.service
 
 [Mount]
-What=/mnt/data/root-overlay/greengrass/ggc/packages/1.3.0/var
-Where=/greengrass/ggc/packages/1.3.0/var
+What=/mnt/data/root-overlay/greengrass/ggc/var
+Where=/greengrass/ggc/var
 Type=none
 Options=bind
 

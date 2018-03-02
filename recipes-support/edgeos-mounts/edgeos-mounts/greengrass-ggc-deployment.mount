@@ -4,8 +4,8 @@ Requires=mnt-data.mount edgeos-data-mnt-init.service
 After=mnt-data.mount edgeos-data-mnt-init.service
 
 [Mount]
-What=/mnt/data/root-overlay/greengrass/ggc/deployment/lambda
-Where=/greengrass/ggc/deployment/lambda
+What=/mnt/data/root-overlay/greengrass/ggc/deployment
+Where=/greengrass/ggc/deployment
 Type=none
 Options=bind
 
