@@ -1,0 +1,14 @@
+Description=Edgeos data mount. Copy original files to bind mount: %I
+DefaultDependencies=no
+Requires=mnt-data.mount
+After=mnt-data.mount
+Before=umount.target
+Conflicts=umount.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash -x cp -R /%I /mnt/data/%I
+
+[Install]
+WantedBy=multi-user.target
