@@ -1,6 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-#TODO figure out how to dynamically determine the version greengrass and rename greengrass-ggc-packages-<greengrass version>-ggc_root.mount
 SRC_URI_append = " \
     file://greengrass-ggc-var.mount \
     file://greengrass-ggc-packages.mount \
@@ -11,7 +10,9 @@ SRC_URI_append = " \
     file://greengrass.private.key \
     file://greengrass-root-ca-cert.pem \
     "
-
+# Add .mount files to this list to copy original files and directories into bindmount location before mount
+# Retains original files, if they exist.
+# Works in conjunction with edgeos-data-mnt-init.service, which is "required" in the listed .mount files.
 SYSTEMD_SERVICE_${PN}_append = " \
     greengrass-certs.mount \
     greengrass-ggc-deployment.mount \
