@@ -1,8 +1,7 @@
 [Unit]
 Description=greengrass packages directory bind mount
-Requires=mnt-data.mount edgeos-data-mnt-init.service copy-files-at-bind-mount-target@%p.service
+Requires=mnt-data.mount edgeos-data-mnt-init.service
 After=mnt-data.mount edgeos-data-mnt-init.service
-After=copy-files-at-bind-mount-target@%p.service
 
 [Mount]
 What=/mnt/data/root-overlay/greengrass/ggc/packages
