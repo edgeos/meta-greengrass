@@ -1,3 +1,4 @@
+[Unit]
 Description=Edgeos data mount. Copy original files to bind mount: %I
 DefaultDependencies=no
 Requires=mnt-data.mount
@@ -8,7 +9,7 @@ Conflicts=umount.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=@BASE_BINDIR@/cp -R /%I /mnt/data/%I
+ExecStart=/bin/cp -R /%I /mnt/data/%I
 
 [Install]
 WantedBy=multi-user.target
