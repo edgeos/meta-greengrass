@@ -10,6 +10,7 @@ SRC_URI_append = " \
     file://greengrass.cert.pem \
     file://greengrass.private.key \
     file://greengrass-root-ca-cert.pem \
+    file://copy-files-at-bind-mount-target@.service
     "
 
 SYSTEMD_SERVICE_${PN}_append = " \
@@ -24,6 +25,7 @@ do_install_append () {
             ${WORKDIR}/greengrass-ggc-packages.mount \
             ${WORKDIR}/greengrass-ggc-deployment.mount \
             ${WORKDIR}/greengrass-certs.mount \
+            ${WORKDIR}/copy-files-at-bind-mount-target@.service \
             ${D}${systemd_unitdir}/system
         
         #Update mount scripts to use actual parition names
