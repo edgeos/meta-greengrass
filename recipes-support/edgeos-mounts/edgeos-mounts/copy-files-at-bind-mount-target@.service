@@ -9,8 +9,8 @@ Conflicts=umount.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/bin/mkdir /mnt/data/root-overlay/%I
-ExecStart=/bin/cp -p -R /%I/* /mnt/data/root-overlay/%I
+ExecStart=/bin/mkdir -p /mnt/data/root-overlay/$(/usr/bin/dirname %I)
+ExecStart=/bin/cp -p -R /%I /mnt/data/root-overlay/$(/usr/bin/dirname %I)
 
 [Install]
 WantedBy=multi-user.target
