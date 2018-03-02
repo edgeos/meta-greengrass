@@ -25,10 +25,16 @@ SYSTEMD_SERVICE_${PN} = " \
 
 S = "${WORKDIR}/${BPN}"
 
+
 # These tasks don't need to be run in this recipe, so they're disabled
 # here.
-do_configure[noexec] = "1"
 do_compile[noexec] = "1"
+
+do_configure(){
+	# Greengrass requires overlayfs. Check that the override is enabled
+	if [ ! ${@"true" if 'overlayfs' in d.getVar('OVERRIDES', True).split(":") else "false"} ]; then
+		bbfatal "Overlayfs must be enabled. Enable with make build BBOVERRIDES=\":overlayfs\""
+}
 
 # Perform the installation of the AWS Greengrass binaries, which consists
 # of copying the unpacked files into the /greengrass folder
