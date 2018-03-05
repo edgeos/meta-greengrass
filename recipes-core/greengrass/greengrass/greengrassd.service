@@ -2,8 +2,18 @@
 Description=Greengrass initialization
 After=network.target greengrass-ggc-packages.mount greengrass-ggc-var.mount greengrass-ggc-deployment.mount greengrass-certs.mount
 Requires=greengrass-ggc-packages.mount greengrass-ggc-var.mount greengrass-ggc-deployment.mount greengrass-certs.mount
-# Restart=always
-# RestartSec=5s
+
+# Attempt to restart service once every RestartSec
+Restart=always
+RestartSec=60
+
+# Allow a max of StartLimitBurst starts every StartLimitIntervalSec seconds.
+# Exceeding this rete will disable automatic Restart until a manual start is initiated.
+# Exceeding this rate will also disallow manual starts until the StartLimitIntervalSec has passed.
+# Setting StartLimitIntervalSec=0 disables rate limiting.
+StartLimitIntervalSec=10
+StartLimitBurst=1
+
 
 [Service]
 ExecStart=/greengrass/ggc/core/greengrassd start
