@@ -1,3 +1,29 @@
+
+### Overrides
+
+The following overrides are needed to as dependencies to greengrass:
+
+Override | Meta Layer |Description
+--------------------|----
+overlayfs			| meta-edgeos | Enable overlay filesystem kernel feature
+
+
+Overrides can be enabled by using the BBOVERRIDES variable.
+
+Example:
+
+```
+make BBOVERRIDES=":overlayfs"
+```
+
+or set for remainder of terminal session:
+
+```
+export BBOVERRIDES=":overlayfs:aufs"
+make
+```
+
+
 Kernel features customization (MQUEUE, CGROUPS, etc) – Done
 The recipe only applies to the imx-linux kernel because to customize the kernel configuration you need to provide a linux name. Extending it to new kernels is straightforward. Check (meta-greengrass/recipes-kernel/linux/linux-imx_4.9.11.bbappend)
 
