@@ -9,7 +9,10 @@ ExecStart=/greengrass/ggc/core/greengrassd start
 ExecStop=/greengrass/ggc/core/greengrassd stop
 
 # Attempt to restart service once every RestartSec
-Restart=always
+# Restart "on-failure" (not "always"), because normal behavior seems to be that greengrassd 
+# exits with 0 on sucess after creating a spin-off process and exit of original process.
+# "always" restart keeps killing old spinn-off greengrass process.
+Restart=on-failure
 RestartSec=60
 
 # Allow a max of StartLimitBurst starts every StartLimitIntervalSec seconds.
