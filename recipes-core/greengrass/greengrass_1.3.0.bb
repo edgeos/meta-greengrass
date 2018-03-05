@@ -28,16 +28,8 @@ S = "${WORKDIR}/${BPN}"
 
 # These tasks don't need to be run in this recipe, so they're disabled
 # here.
+do_configure[noexec] = "1"
 do_compile[noexec] = "1"
-
-do_configure(){
-	# Greengrass requires overlayfs. Check that the override is enabled using inline Python.
-	if [ ! ${@"true" if 'overlayfs' in d.getVar('OVERRIDES', True).split(":") else "false"} ]; then
-		bbfatal "Overlayfs must be enabled. Enable with make build BBOVERRIDES=\":overlayfs\""
-	else
-		bbfatal "Conditions are reversed"
-	fi 
-}
 
 # Perform the installation of the AWS Greengrass binaries, which consists
 # of copying the unpacked files into the /greengrass folder
@@ -45,10 +37,8 @@ do_configure(){
 # ${BPN} = greengrass
 do_install() {
 	# Greengrass requires overlayfs. Check that the override is enabled using inline Python.
-	if [ ! ${@"true" if 'overlayfs' in d.getVar('OVERRIDES', True).split(":") else "false"} ]; then
-		bbfatal "2. Overlayfs must be enabled. Enable with make build BBOVERRIDES=\":overlayfs\""
-	else
-		bbfatal "2. Conditions are reversed"
+	if ${@"false" if 'overlayfs' in d.getVar('OVERRIDES', True).split(":") else "true"}; then
+		bbfatal "Overlayfs must be enabled. Enable with make build BBOVERRIDES=\":overlayfs\""
 	fi 
 
 	install -d ${D}/${BPN}
