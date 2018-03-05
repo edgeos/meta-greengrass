@@ -3,6 +3,11 @@ Description=Greengrass initialization
 After=network.target greengrass-ggc-packages.mount greengrass-ggc-var.mount greengrass-ggc-deployment.mount greengrass-certs.mount
 Requires=greengrass-ggc-packages.mount greengrass-ggc-var.mount greengrass-ggc-deployment.mount greengrass-certs.mount
 
+
+[Service]
+ExecStart=/greengrass/ggc/core/greengrassd start
+ExecStop=/greengrass/ggc/core/greengrassd stop
+
 # Attempt to restart service once every RestartSec
 Restart=always
 RestartSec=60
@@ -13,11 +18,6 @@ RestartSec=60
 # Setting StartLimitIntervalSec=0 disables rate limiting.
 StartLimitIntervalSec=10
 StartLimitBurst=1
-
-
-[Service]
-ExecStart=/greengrass/ggc/core/greengrassd start
-ExecStop=/greengrass/ggc/core/greengrassd stop
 
 [Install]
 WantedBy=multi-user.target
