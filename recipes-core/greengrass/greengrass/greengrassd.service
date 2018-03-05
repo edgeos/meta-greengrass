@@ -19,7 +19,7 @@ RestartSec=60
 # Exceeding this rete will disable automatic Restart until a manual start is initiated.
 # Exceeding this rate will also disallow manual starts until the StartLimitIntervalSec has passed.
 # Setting StartLimitIntervalSec=0 disables rate limiting.
-StartLimitIntervalSec=10
+StartLimitIntervalSec=0
 StartLimitBurst=1
 
 [Install]
