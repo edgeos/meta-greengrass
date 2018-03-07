@@ -5,10 +5,6 @@ SRC_URI_append = " \
     file://greengrass-ggc-packages.mount \
     file://greengrass-ggc-deployment.mount \
     file://greengrass-certs.mount \
-    file://greengrass.public.key \
-    file://greengrass.cert.pem \
-    file://greengrass.private.key \
-    file://greengrass-root-ca-cert.pem \
     "
 # Add .mount files to this list to copy original files and directories into bindmount location before mount
 # Retains original files, if they exist.
