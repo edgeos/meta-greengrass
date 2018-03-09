@@ -16,6 +16,7 @@ INHIBIT_PACKAGE_STRIP = "1"
 SRC_URI = " \
 	file://${PN}-${BUILD_OS}-${TARGET_ARCH}-${PV}.tar.gz \
 	file://greengrassd.service \
+	file://config.json \
 	"
 
 SYSTEMD_SERVICE_${PN} = " \
@@ -23,6 +24,7 @@ SYSTEMD_SERVICE_${PN} = " \
     "
 
 S = "${WORKDIR}/${BPN}"
+
 
 # These tasks don't need to be run in this recipe, so they're disabled
 # here.
@@ -34,15 +36,28 @@ do_compile[noexec] = "1"
 # ${D} = /
 # ${BPN} = greengrass
 do_install() {
+	# Greengrass requires overlayfs. Check that the override is enabled using inline Python.
+	if ${@"false" if 'overlayfs' in d.getVar('OVERRIDES', True).split(":") else "true"}; then
+		bbfatal "Overlayfs must be enabled. Enable with make build BBOVERRIDES=\":overlayfs\""
+	fi 
+
 	install -d ${D}/${BPN}
 	tar --no-same-owner --exclude='./patches' --exclude='./.pc' -cpf - -C ${S} . \
 | tar --no-same-owner -xpf - -C ${D}/${BPN}
+	chmod 755 ${D}/${BPN}/ggc/core/greengrassd
 
 	# Install systemd init scripts for greengrass
 	install -d ${D}${systemd_unitdir}/system
 	install -c -m 0644 ${WORKDIR}/${PN}d.service ${D}${systemd_unitdir}/system
-	# Create greengrass r/w directory in /mnt/dataand bind mount
-	install -d ${D}/${BPN}/ggc/packages/${PV}/ggc_root
+
+	# Create greengrass r/w directories for data and logs in /mnt/data and bind mount
+	install -d ${D}/${BPN}/ggc/packages
+	install -d ${D}/${BPN}/ggc/var
+	install -d ${D}/${BPN}/ggc/deployment
+	install -d ${D}/${BPN}/certs
+
+	# Copy in configuration file
+	install -c -m 0644 ${WORKDIR}/config.json ${D}/${BPN}/config
 }
 
 # Perform post installation tasks that are required for AWS Greengrass to

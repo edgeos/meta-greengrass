@@ -1,15 +1,32 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-#TODO figure out how to dynamically determine the version greengrass and rename greengrass-ggc-packages-<greengrass version>-ggc_root.mount
 SRC_URI_append = " \
-    file://greengrass-ggc-packages-1.3.0-ggc_root.mount \
+    file://greengrass-ggc-var.mount \
+    file://greengrass-ggc-packages.mount \
+    file://greengrass-ggc-deployment.mount \
+    file://greengrass-certs.mount \
     "
-
+# Add .mount files to this list to copy original files and directories into bindmount location before mount
+# Retains original files, if they exist.
+# Works in conjunction with edgeos-data-mnt-init.service, which is "required" in the listed .mount files.
 SYSTEMD_SERVICE_${PN}_append = " \
+    greengrass-certs.mount \
+    greengrass-ggc-deployment.mount \
+    greengrass-ggc-packages.mount \
+    greengrass-ggc-var.mount \
     "
 
 do_install_append () {
     if ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then
+
+        install -d ${D}${systemd_unitdir}/system
+        install -c -m 0644 \
+            ${WORKDIR}/greengrass-ggc-var.mount \
+            ${WORKDIR}/greengrass-ggc-packages.mount \
+            ${WORKDIR}/greengrass-ggc-deployment.mount \
+            ${WORKDIR}/greengrass-certs.mount \
+            ${D}${systemd_unitdir}/system
+        
         #Update mount scripts to use actual parition names
         sed -i -e 's,@EDGEOS_BOOT_FS_LABEL@,${EDGEOS_BOOT_FS_LABEL},g' \
                -e 's,@EDGEOS_ROOT_FS_LABEL@,${EDGEOS_ROOT_FS_LABEL},g' \
