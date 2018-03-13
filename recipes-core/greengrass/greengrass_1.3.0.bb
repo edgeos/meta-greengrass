@@ -103,4 +103,6 @@ RDEPENDS_${PN} = " \
 	python-argparse \
 	python-json \
 	python-numbers \
+	python-threading \
+	python-logging \
 	"
