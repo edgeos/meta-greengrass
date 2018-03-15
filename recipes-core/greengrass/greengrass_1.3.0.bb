@@ -36,11 +36,6 @@ do_compile[noexec] = "1"
 # ${D} = /
 # ${BPN} = greengrass
 do_install() {
-	# Greengrass requires overlayfs. Check that the override is enabled using inline Python.
-	if ${@"false" if 'overlayfs' in d.getVar('OVERRIDES', True).split(":") else "true"}; then
-		bbfatal "Overlayfs must be enabled. Enable with make build BBOVERRIDES=\":overlayfs\""
-	fi 
-
 	install -d ${D}/${BPN}
 	tar --no-same-owner --exclude='./patches' --exclude='./.pc' -cpf - -C ${S} . \
 | tar --no-same-owner -xpf - -C ${D}/${BPN}
