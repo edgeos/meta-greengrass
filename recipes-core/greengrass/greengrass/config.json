@@ -1,11 +1,11 @@
 {
     "coreThing" : {
-      "caPath" : "greengrass-root-ca-cert.pem",
-      "certPath" : "greengrass.cert.pem",
-      "keyPath" : "greengrass.private.key",
-      "thingArn" : "arn:aws:iot:us-west-2:389158924366:thing/MacOS_Core",
-      "iotHost" : "a19t3wk7sr2jyy.iot.us-west-2.amazonaws.com",
-      "ggHost" : "greengrass.iot.us-west-2.amazonaws.com",
+      "caPath" : "ROOT_CA_PEM_HERE",
+      "certPath" : "CLOUD_PEM_CRT_HERE",
+      "keyPath" : "CLOUD_PEM_KEY_HERE",
+      "thingArn" : "THING_ARN_HERE",
+      "iotHost" : "HOST_PREFIX_HERE.iot.AWS_REGION_HERE.amazonaws.com",
+      "ggHost" : "greengrass.iot.AWS_REGION_HERE.amazonaws.com",
       "keepAlive" : 600
     },
     "runtime" : {
