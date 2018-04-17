@@ -20,7 +20,7 @@ make
 
 
 
-##Steps to Build into Yocto-Intel
+## Steps to Build into Yocto-Intel
 
 Tested on [PredixEdgeOS/yocto-intel@24a10b897585df3a8352949142c685387609b9c3](https://github.build.ge.com/PredixEdgeOS/yocto-intel/tree/24a10b897585df3a8352949142c685387609b9c3) (Currently on branch merge_rts49_jpward) 
 
