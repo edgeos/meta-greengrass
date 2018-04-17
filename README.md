@@ -99,7 +99,7 @@ index cda3e88..64614df 100644
 
 
 
-##Configuring Greengrass
+## Configuring Greengrass
 
 **Configuration File**
 
@@ -127,7 +127,7 @@ See the [yocto-intel README](https://github.build.ge.com/PredixEdgeOS/yocto-inte
 
 
 
-##Outstanding Limitations with Using Greengrass on EdgeOS
+## Outstanding Limitations with Using Greengrass on EdgeOS
 
 The primary challenge with using Greengrass on EdgeOS is with running lambda functions with non-rudimentary dependencies. One of the advertised features of Greengrass is the ability to deploy Amazon Lambdas onto registered Greengrass Cores. However, these lambdas run directly on the OS. Meanwhile, EdgeOS is rather minimal by design and so it is quite likely that system- and 3rd-party- libraries that your lambda requires are not included. The strategy with Lambda dependencies, therefore, is to package all dependencies within the Lambda, but this becomes challanging when some dependencies are compiled libraries.
 
