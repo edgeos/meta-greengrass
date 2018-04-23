@@ -64,8 +64,6 @@ export BBOVERRIDES=":no-edge-mgmt" # If you do not want edge managament (eg egde
 make
 ~~~
 
-
-
 ### Building for HPFA
 
 1. Add your RTS license to ```src/layers/meta-ge-edgeos/meta-ge-edgeos-common/recipes-bsp/rth/rth/license.txt``` 
@@ -126,6 +124,17 @@ and place all the certs into ```/greengrass/certs/``` on EdgeOS.
 See the [yocto-intel README](https://github.build.ge.com/PredixEdgeOS/yocto-intel/tree/24a10b897585df3a8352949142c685387609b9c3) and/or the [yocto-qemu README](https://github.com/edgeos/yocto-qemu/tree/greengrass) for instructions on how to run the image and ```ssh``` in.
 
 
+## Greengrass Lambda Opcode error in QEMU
+
+If your Greengrass lambda fails with an error such as the one below in ```Journalctl```:
+
+~~~
+Mar 12 22:42:22 edgeos kernel: traps: python2.7[2169] trap invalid opcode ip:7fd273ba4a3b sp:7ffe1dec9860 error:0
+Mar 12 22:42:22 edgeos kernel:  in strop.so[7fd273ba3000+6000]
+Mar 12 22:42:22 edgeos audit[2169]: ANOM_ABEND auid=4294967295 uid=990 gid=984 ses=4294967295 pid=2169 comm="python2.7" exe="/usr/bin/python2.7" sig=4
+~~~
+
+then add one or both of the following to your QEMU launch command: ```-cpu core2duo``` and/or ```-enable-kvm```/
 
 ## Outstanding Limitations with Using Greengrass on EdgeOS
 
