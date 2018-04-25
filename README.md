@@ -15,9 +15,10 @@ Meta-greengrass is already integrated with github.com/edgeos/yocto-qemu on branc
 ~~~bash
 git clone -b greengrass --recursive git@github.com:edgeos/yocto-qemu.git
 cd yocto-qemu
-make
+make BBOVERRIDES=":overlayfs"
 ~~~
 
+Note that the above ```BBOVERRIDES``` "shouldn't" need to be there, as the linux-yocto_%.bbappend was supposed to take care of it. Need to investigate to determine why it is not working.
 
 
 ## Steps to Build into Yocto-Intel
