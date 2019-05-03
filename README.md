@@ -1,100 +1,72 @@
-# Meta-Greengrass Layer for EdgeOS
+# Meta-Greengrass Layer
 
-Builds AWS Greengrass 1.3.0 into EdgeOS.
+Builds AWS Greengrass 1.6.0 with optional easy install into EdgeOS.
 
 Information about AWS IoT Greengrass can be found here: [https://aws.amazon.com/greengrass/](https://aws.amazon.com/greengrass/) and [Greengrass Developer Guide](https://docs.aws.amazon.com/greengrass/latest/developerguide/what-is-gg.html).
 
 
+## Steps to Build
 
-## Steps to Build Yocto-Qemu
-
-Tested on [edgeos/yocto-qemu@236cccc1afeeef4c04058697f5b3e0674616aed5](https://github.com/edgeos/yocto-qemu/tree/236cccc1afeeef4c04058697f5b3e0674616aed5).
-
-Meta-greengrass is already integrated with github.com/edgeos/yocto-qemu on branch greengrass.
+Add meta-greengrass to current build (in EdgeOS context):
 
 ~~~bash
-git clone -b greengrass --recursive git@github.com:edgeos/yocto-qemu.git
-cd yocto-qemu
-make BBOVERRIDES=":overlayfs"
+git submodule add -b greengrass_1.6.0 git@github.build.ge.com:leap-host/meta-greengrass.git src/layers/meta-greengrass
 ~~~
 
-Note that the above ```BBOVERRIDES``` "shouldn't" need to be there, as the linux-yocto_%.bbappend was supposed to take care of it. Need to investigate to determine why it is not working.
+Add meta-greengrass layers to bblayers.conf (in EdgeOS context):
 
+~~~
+# Example from yocto-qemu
+cat src/layers/meta-edgeos-qemu/conf/samples/bblayers.conf.sample 
+# LAYER_CONF_VERSION is increased each time build/conf/bblayers.conf
+# changes incompatibly
+LCONF_VERSION = "6"
 
-## Steps to Build into Yocto-Intel
+BBPATH = "${TOPDIR}"
+BBFILES ?= ""
 
-Tested on [PredixEdgeOS/yocto-intel@24a10b897585df3a8352949142c685387609b9c3](https://github.build.ge.com/PredixEdgeOS/yocto-intel/tree/24a10b897585df3a8352949142c685387609b9c3) (Currently on branch merge_rts49_jpward) 
+BBLAYERS ?= " \
+    ${TOPDIR}/../layers/poky/meta \
+    ${TOPDIR}/../layers/poky/meta-yocto \
+    ${TOPDIR}/../layers/meta-openembedded/meta-oe \
+    ${TOPDIR}/../layers/meta-openembedded/meta-filesystems \
+    ${TOPDIR}/../layers/meta-openembedded/meta-networking \
+    ${TOPDIR}/../layers/meta-openembedded/meta-python \
+    ${TOPDIR}/../layers/meta-openembedded/meta-perl \
+    ${TOPDIR}/../layers/meta-virtualization \
+    ${TOPDIR}/../layers/meta-edgeos/meta-edgeos-common \
+    ${TOPDIR}/../layers/meta-edgeos/meta-edgeos-pyro \
+    ${TOPDIR}/../layers/meta-edgeos-qemu \
+    ${TOPDIR}/../layers/oe-meta-go \
+    ${TOPDIR}/../layers/meta-swupdate \
+    ${TOPDIR}/../layers/meta-security \
+    ${TOPDIR}/../layers/meta-security/meta-tpm \
+    ${TOPDIR}/../layers/meta-platform-management/meta-edgeos \
+    ${TOPDIR}/../layers/meta-platform-management/meta-platform-management-common \
+    ${TOPDIR}/../layers/meta-bootloader/meta-edgeos \
+    ${TOPDIR}/../layers/meta-bootloader/meta-bootloader-common \
+    ${TOPDIR}/../layers/meta-greengrass/meta-edgeos \
+    ${TOPDIR}/../layers/meta-greengrass/meta-greengrass-common \
+    "
 
-~~~bash
-git clone git@github.build.ge.com:PredixEdgeOS/yocto-intel.git yi-test
-cd yocto-intel
-git checkout 24a10b897585df3a8352949142c685387609b9c3
-git submodule update --init --recursive
+BBLAYERS_NON_REMOVABLE ?= " \
+    ${TOPDIR}/../layers/poky/meta \
+    ${TOPDIR}/../layers/poky/meta-yocto \
+    ${TOPDIR}/../layers/meta-edgeos/meta-edgeos-common \
+    "
 ~~~
 
+If you are building for Raspberry Pi 3 (in EdgeOS context) then also add:
 
-
-* Meta-greengrass is not built into this project yet, but can be manually added:
-
-~~~bash
-cd yocto-intel
-git clone git@github.com:edgeos/meta-greengrass.git src/layers/meta-greengrass
+~~~
+${TOPDIR}/../layers/meta-greengrass/meta-edgeos-raspberrypi \
 ~~~
 
+on a new line, after:
 
-
-* Apply the following diff:
-
-~~~diff
---- a/src/layers/meta-edgeos-intel/conf/samples/bblayers.conf.sample
-+++ b/src/layers/meta-edgeos-intel/conf/samples/bblayers.conf.sample
-@@ -23,6 +23,7 @@ BBLAYERS ?= " \
-     ${TOPDIR}/../layers/meta-swupdate \
-     ${TOPDIR}/../layers/meta-security \
-     ${TOPDIR}/../layers/meta-security/meta-tpm \
-+    ${TOPDIR}/../layers/meta-greengrass \
-     "
 ~~~
-
-
-
-### Building for QEMU emulation
-
-~~~bash
-export BBOVERRIDES=":no-edge-mgmt" # If you do not want edge managament (eg egde-agent)
-make
+${TOPDIR}/../layers/meta-greengrass/meta-greengrass-common \
 ~~~
-
-### Building for HPFA
-
-1. Add your RTS license to ```src/layers/meta-ge-edgeos/meta-ge-edgeos-common/recipes-bsp/rth/rth/license.txt``` 
-2. Apply the following diff within the meta-ge-edgeos submodule:
-
-~~~diff
-diff --git a/meta-ge-edgeos-common/recipes-kernel/linux/rts-hyper-v-4.9.inc b/meta-ge-edgeos-common/recipes-kernel/linux/rts-hyper-v-4.9.inc
-index cda3e88..64614df 100644
---- a/meta-ge-edgeos-common/recipes-kernel/linux/rts-hyper-v-4.9.inc
-+++ b/meta-ge-edgeos-common/recipes-kernel/linux/rts-hyper-v-4.9.inc
-@@ -17,10 +17,15 @@
- #
- FILESEXTRAPATHS_prepend := "${THISDIR}/rts-hyper-v-4.9:"
- 
--LINUX_VERSION_corei7-64-intel-common = "4.9.61"
--LINUX_VERSION = "4.9.61"
--SRCREV_meta = "f4e37e151102d89c4d0e110c88eb3b3c36bdeaa4"
--SRCREV_machine = "6838fc62f81f59330f720062249b4830f0161fbd"
- 
- # RTS hypervisor support
- SRC_URI += " \
-~~~
-
-3. Run the build with the correct options:
-
-   ~~~bash
-   export BBOVERRIDES=":cfg-rts-hyper-v:hpfa-additive:bl-grub"
-   # export BBOVERRIDES=":cfg-rts-hyper-v:hpfa-additive:bl-grub:no-edge-mgmt" if you do not want edge-mgmt (eg edge-agent)
-   make
-   ~~~
 
 
 
@@ -104,11 +76,21 @@ index cda3e88..64614df 100644
 
 You will need to add your device configuration information in the greengrass configuration file.
 
-For information how to complete config file see the ```'config.json' Parameter Summary``` section [here](https://docs.aws.amazon.com/greengrass/latest/developerguide/gg-device-start.html).
+You can either modify  ```src/layers/meta-greengrass/meta-greengrass-common/recipes-core/greengrass/greengrass/config.json``` to build (some or all) of your configuration into EdgeOS, or else use ```SSH``` or ```SCP```  to modify ```/greengrass/config/config.json``` on the resulting image.
 
-You can either modify  ```src/layers/greengrass/recipes-core/greengrass/greengrass/config.json``` to build (some or all) of your configuration into EdgeOS, or else use ```SSH``` or ```SCP```  to modify ```/greengrass/config/config.json``` on the resulting image.
+For information how to complete config file see the [Greengrass Developer Guide -- Configure the AWS Greengrass Core](https://docs.aws.amazon.com/greengrass/latest/developerguide/gg-core.html).
 
-See the [yocto-intel README](https://github.build.ge.com/PredixEdgeOS/yocto-intel/tree/24a10b897585df3a8352949142c685387609b9c3) and/or the [yocto-qemu README](https://github.com/edgeos/yocto-qemu/tree/greengrass) for instructions on how to run the image and ```ssh``` in.
+***NOTE!*** Pay particular attention to the file permission process in the _Configure a Write Directory for AWS Greengrass_ section in the Greengrass Developer Guide page provided above. In the EdgeOS context you **MUST** use the `writeDirectory` configuration option and provide a path under `/mnt/data`, because the root filesystem is read-only. For example:
+
+~~~bash
+$ systemctl stop greengrassd
+$ mount -o remount,rw /
+# Make changes to /greengrass/config/config.json, then
+$ chmod 0600 /greengrass/config/config.json
+# Continued below ...
+~~~
+
+
 
 **Certificates**
 
@@ -120,9 +102,20 @@ Download the root-ca cert for AWS by:
 wget -O root.ca.pem http://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem
 ~~~
 
-and place all the certs into ```/greengrass/certs/``` on EdgeOS.
+and place all 4 of the files into ```/greengrass/certs/``` on EdgeOS.
 
-See the [yocto-intel README](https://github.build.ge.com/PredixEdgeOS/yocto-intel/tree/24a10b897585df3a8352949142c685387609b9c3) and/or the [yocto-qemu README](https://github.com/edgeos/yocto-qemu/tree/greengrass) for instructions on how to run the image and ```ssh``` in.
+***NOTE!*** As mentioned above, in the EdgeOS context the root filesystem is read-only so you must follow the instructions on [Greengrass Developer Guide -- Configure the AWS Greengrass Core](https://docs.aws.amazon.com/greengrass/latest/developerguide/gg-core.html), especially those pertaining to file permissions. For example:
+
+~~~bash
+# ...continued from above
+# Copy your the 4 certs into /greengrass/certs, then
+$ chown -R ggc_user:ggc_group /greengrass/certs/
+$ chown -R ggc_user:ggc_group /greengrass/ggc/packages/1.6.0/lambda/
+$ mount -o remount,ro /
+$ systemctl start greengrassd
+~~~
+
+
 
 
 ## Greengrass Lambda Opcode error in QEMU
@@ -137,8 +130,14 @@ Mar 12 22:42:22 edgeos audit[2169]: ANOM_ABEND auid=4294967295 uid=990 gid=984 s
 
 then add one or both of the following to your QEMU launch command: ```-cpu core2duo``` and/or ```-enable-kvm```/
 
-## Outstanding Limitations with Using Greengrass on EdgeOS
+## Philosophy of Use on EdgeOS
 
-The primary challenge with using Greengrass on EdgeOS is with running lambda functions with non-rudimentary dependencies. One of the advertised features of Greengrass is the ability to deploy Amazon Lambdas onto registered Greengrass Cores. However, these lambdas run directly on the OS. Meanwhile, EdgeOS is rather minimal by design and so it is quite likely that system- and 3rd-party- libraries that your lambda requires are not included. The strategy with Lambda dependencies, therefore, is to package all dependencies within the Lambda, but this becomes challanging when some dependencies are compiled libraries.
+It is important to realize that Greengrass lambdas are very general tools and can be used on EdgeOS in a manner that is not inline with our philosophy of running containerized apps. Lambdas, however, are a very powerful tool can very naturally be used within the EdgeOS philosophy; it is up to the developers and admins to use Lambdas appropriately.
 
-It is for this reason that we designed EdgeOS to deploy applications using containers. 
+By way of example, when following the Greengrass Developer Guide you will learn how to launch lambdas on EdgeOS. These lambdas will run inside a special containers managed by Greengrass only. These lambda-containers can use system libraries and will work just fine for the simple examples in the guide, meanwhile, EdgeOS is minimal by design and so it is quite likely that system- and 3rd-party- libraries that your lambda requires are not included in the OS. The strategy with lambda dependencies, therefore, is to package all dependencies within the Lambda.  However, this becomes challenging when there are a lot of dependencies and especially challenging when when some dependencies are compiled system libraries.
+
+Furthermore, it is important to note that lamdbas are not monitored or controlled by the Container App Service EdgeOS service. While, lambdas are authenticated and monitored by Greengrass, this diverges from the philosophy of use for EdgeOS.
+
+It is for this reason that we designed EdgeOS to deploy applications using containers managed by the Container App Service. Therefore, we recommend only using lambdas to command the built in EdgeOS services or for simple actions for which containers may not be ideal. For example, a lambda can be written to command a system update using the Software Update Service which is built into EdgeOS. Additionally, the lambda function can communicate with the Container App Service to download and launch an app. By using the AWS SDK libraries, your containerized apps launched in this manner can authenticate, communicate, and receive commands from other AWS services.
+
+In this manner you will build a library of lambdas in your AWS Console which you will use to perform preprogrammed actions on some or all of your Greengrass enabled devices. You will then have records and logs of which actions (lambdas) were run on each device, at what times, and by whom.

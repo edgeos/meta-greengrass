@@ -1,0 +1,29 @@
+[Unit]
+Description=Greengrass initialization
+After=mnt-data.mount network.target
+Requires=mnt-data.mount
+
+# Allow a max of StartLimitBurst starts every StartLimitIntervalSec seconds.
+# Exceeding this rete will disable automatic Restart until a manual start is initiated.
+# Exceeding this rate will also disallow manual starts until the StartLimitIntervalSec has passed.
+# Setting StartLimitIntervalSec=0 disables rate limiting.
+StartLimitIntervalSec=0
+StartLimitBurst=1
+
+[Service]
+Type=forking
+PIDFile=/var/run/greengrassd.pid
+ExecStart=/greengrass/ggc/core/greengrassd start
+ExecStop=/greengrass/ggc/core/greengrassd stop
+
+# Attempt to restart service once every RestartSec
+# Restart "on-failure" (not "always"), because normal behavior seems to be that greengrassd 
+# exits with 0 on sucess after creating a spin-off process and exit of original process.
+# "always" restart keeps killing old spinn-off greengrass process.
+Restart=on-failure
+RestartSec=30
+
+
+
+[Install]
+WantedBy=multi-user.target
